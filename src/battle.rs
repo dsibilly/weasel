@@ -61,7 +61,7 @@ impl<R: BattleRules + 'static> Battle<R> {
         if self.phase() == BattlePhase::Ended {
             Err(WeaselError::BattleEnded)
         } else {
-            event.verify(&self)
+            event.verify(self)
         }
     }
 
@@ -121,7 +121,7 @@ impl<R: BattleRules + 'static> Battle<R> {
         // Check teams' objectives.
         Battle::check_objectives(
             &self.state,
-            &self.rules.team_rules(),
+            self.rules.team_rules(),
             &self.metrics.read_handle(),
             &mut queue.as_mut().map(|queue| Prioritized::new(queue)),
             Checkpoint::EventEnd,
@@ -213,9 +213,9 @@ impl<R: BattleRules + 'static> Battle<R> {
     }
 
     /// Returns a mutable handle to manage the players' rights to control one or more teams.
-    pub(crate) fn rights_mut<'a>(
-        &'a mut self,
-    ) -> RightsHandleMut<R, impl Iterator<Item = &'a TeamId<R>>> {
+    pub(crate) fn rights_mut(
+        &mut self,
+    ) -> RightsHandleMut<R, impl Iterator<Item = &'_ TeamId<R>>> {
         RightsHandleMut::new(
             &mut self.rights,
             self.state.entities().teams().map(|team| team.id()),
@@ -225,10 +225,10 @@ impl<R: BattleRules + 'static> Battle<R> {
     /// Returns an iterator over all history events in a range, versioned.
     ///
     /// The range must be valid.
-    pub fn versioned_events<'a>(
-        &'a self,
+    pub fn versioned_events(
+        &self,
         range: Range<usize>,
-    ) -> impl Iterator<Item = VersionedEventWrapper<R>> + 'a {
+    ) -> impl Iterator<Item = VersionedEventWrapper<R>> + '_ {
         self.history().events()[range]
             .iter()
             .map(move |e| e.clone().version(self.rules().version().clone()))

@@ -360,42 +360,42 @@ macro_rules! events_vec {
         const OBJECT_1_ID: u32 = 1;
         const STATUS_1_ID: u32 = 1;
         // Collect all events into a vector.
-        let mut events: Vec<Box<dyn Event<CustomRules> + Send>> = Vec::new();
-        events.push(DummyEvent::trigger(&mut ()).event());
-        events.push(CreateTeam::trigger(&mut (), TEAM_1_ID).event());
-        events.push(CreateCreature::trigger(&mut (), TEAM_1_ID, CREATURE_1_ID, ()).event());
-        events.push(CreateObject::trigger(&mut (), OBJECT_1_ID, ()).event());
-        events.push(MoveEntity::trigger(&mut (), ENTITY_1_ID, ()).event());
-        events.push(StartTurn::trigger(&mut (), ENTITY_1_ID).event());
-        events.push(EndTurn::trigger(&mut ()).event());
-        events.push(EndRound::trigger(&mut ()).event());
-        events.push(EnvironmentTurn::trigger(&mut ()).event());
-        events.push(ActivateAbility::trigger(&mut (), ENTITY_1_ID, ABILITY_1_ID).event());
-        events.push(InvokePower::trigger(&mut (), TEAM_1_ID, POWER_1_ID).event());
-        events.push(ApplyImpact::trigger(&mut (), ()).event());
-        events.push(AlterStatistics::trigger(&mut (), ENTITY_1_ID, ()).event());
-        events.push(AlterStatuses::trigger(&mut (), ENTITY_1_ID, ()).event());
-        events.push(AlterAbilities::trigger(&mut (), ENTITY_1_ID, ()).event());
-        events.push(AlterPowers::trigger(&mut (), TEAM_1_ID, ()).event());
-        events.push(RegenerateStatistics::trigger(&mut (), ENTITY_1_ID.clone()).event());
-        events.push(RegenerateAbilities::trigger(&mut (), ENTITY_1_ID.clone()).event());
-        events.push(RegeneratePowers::trigger(&mut (), TEAM_1_ID.clone()).event());
-        events.push(InflictStatus::trigger(&mut (), ENTITY_1_ID.clone(), STATUS_1_ID).event());
-        events.push(ClearStatus::trigger(&mut (), ENTITY_1_ID.clone(), STATUS_1_ID).event());
-        events.push(ConvertCreature::trigger(&mut (), CREATURE_1_ID, TEAM_1_ID).event());
-        events.push(
+        let events: Vec<Box<dyn Event<CustomRules> + Send>> = vec![
+            DummyEvent::trigger(&mut ()).event(),
+            CreateTeam::trigger(&mut(), TEAM_1_ID).event(),
+            CreateCreature::trigger(&mut (), TEAM_1_ID, CREATURE_1_ID, ()).event(),
+            CreateObject::trigger(&mut (), OBJECT_1_ID, ()).event(),
+            MoveEntity::trigger(&mut (), ENTITY_1_ID, ()).event(),
+            StartTurn::trigger(&mut (), ENTITY_1_ID).event(),
+            EndTurn::trigger(&mut ()).event(),
+            EndRound::trigger(&mut ()).event(),
+            EnvironmentTurn::trigger(&mut ()).event(),
+            ActivateAbility::trigger(&mut (), ENTITY_1_ID, ABILITY_1_ID).event(),
+            InvokePower::trigger(&mut (), TEAM_1_ID, POWER_1_ID).event(),
+            ApplyImpact::trigger(&mut (), ()).event(),
+            AlterStatistics::trigger(&mut (), ENTITY_1_ID, ()).event(),
+            AlterStatuses::trigger(&mut (), ENTITY_1_ID, ()).event(),
+            AlterAbilities::trigger(&mut (), ENTITY_1_ID, ()).event(),
+            AlterPowers::trigger(&mut (), TEAM_1_ID, ()).event(),
+            RegenerateStatistics::trigger(&mut (), ENTITY_1_ID.clone()).event(),
+            RegenerateAbilities::trigger(&mut (), ENTITY_1_ID.clone()).event(),
+            RegeneratePowers::trigger(&mut (), TEAM_1_ID.clone()).event(),
+            InflictStatus::trigger(&mut (), ENTITY_1_ID.clone(), STATUS_1_ID).event(),
+            ClearStatus::trigger(&mut (), ENTITY_1_ID.clone(), STATUS_1_ID).event(),
+            ConvertCreature::trigger(&mut (), CREATURE_1_ID, TEAM_1_ID).event(),
             SetRelations::trigger(&mut (), &[(TEAM_1_ID, TEAM_1_ID, Relation::Ally)]).event(),
-        );
-        events.push(ConcludeObjectives::trigger(&mut (), TEAM_1_ID, Conclusion::Victory).event());
-        events.push(RemoveCreature::trigger(&mut (), CREATURE_1_ID).event());
-        events.push(RemoveObject::trigger(&mut (), OBJECT_1_ID).event());
-        events.push(RemoveTeam::trigger(&mut (), TEAM_1_ID).event());
-        events.push(AlterSpace::trigger(&mut (), ()).event());
-        events.push(ResetEntropy::trigger(&mut ()).event());
-        events.push(ResetObjectives::trigger(&mut (), TEAM_1_ID).event());
-        events.push(ResetRounds::trigger(&mut ()).event());
-        events.push(ResetSpace::trigger(&mut ()).event());
-        events.push(EndBattle::trigger(&mut ()).event());
+            ConcludeObjectives::trigger(&mut (), TEAM_1_ID, Conclusion::Victory).event(),
+            RemoveCreature::trigger(&mut (), CREATURE_1_ID).event(),
+            RemoveObject::trigger(&mut (), OBJECT_1_ID).event(),
+            RemoveTeam::trigger(&mut (), TEAM_1_ID).event(),
+            AlterSpace::trigger(&mut (), ()).event(),
+            ResetEntropy::trigger(&mut ()).event(),
+            ResetObjectives::trigger(&mut (), TEAM_1_ID).event(),
+            ResetRounds::trigger(&mut ()).event(),
+            ResetSpace::trigger(&mut ()).event(),
+            EndBattle::trigger(&mut ()).event()
+        ];
+
         events
     }};
 }

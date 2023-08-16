@@ -402,8 +402,7 @@ impl<R: BattleRules> Entities<R> {
             .iter()
             .filter(move |&(k, _)| k.first == *id || k.second == *id)
             .filter(|&(_, v)| *v == Relation::Ally)
-            .map(|(k, _)| k.values())
-            .flatten()
+            .flat_map(|(k, _)| k.values())
             .filter(move |v| v != id)
     }
 
@@ -418,8 +417,7 @@ impl<R: BattleRules> Entities<R> {
             .iter()
             .filter(move |&(k, _)| k.first == *id || k.second == *id)
             .filter(|&(_, v)| *v == Relation::Enemy)
-            .map(|(k, _)| k.values())
-            .flatten()
+            .flat_map(|(k, _)| k.values())
             .filter(move |v| v != id)
     }
 

@@ -438,7 +438,7 @@ fn rights() {
     .enable_authentication(PLAYER_1_ID)
     .build();
     let client = Arc::new(Mutex::new(client));
-    assert_eq!(client.lock().unwrap().authentication(), true);
+    assert!(client.lock().unwrap().authentication());
     // Connect the client to the server.
     let mut client_sink = TestClientSink::new(CLIENT_1_ID, client.clone());
     add_sink!(server, client_sink);

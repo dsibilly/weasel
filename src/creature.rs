@@ -257,12 +257,12 @@ impl<R: BattleRules> Clone for CreateCreature<R> {
 
 impl<R: BattleRules> CreateCreature<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         id: CreatureId<R>,
         team_id: TeamId<R>,
         position: Position<R>,
-    ) -> CreateCreatureTrigger<'a, R, P> {
+    ) -> CreateCreatureTrigger<'_, R, P> {
         CreateCreatureTrigger {
             processor,
             id,
@@ -309,7 +309,7 @@ impl<R: BattleRules + 'static> Event<R> for CreateCreature<R> {
         battle
             .rules()
             .team_rules()
-            .allow_new_entity(&battle.state, &team, EntityAddition::CreatureSpawn)
+            .allow_new_entity(&battle.state, team, EntityAddition::CreatureSpawn)
             .map_err(|err| {
                 WeaselError::NewCreatureUnaccepted(self.team_id.clone(), Box::new(err))
             })?;
@@ -574,8 +574,8 @@ impl<R: BattleRules + 'static> Event<R> for ConvertCreature<R> {
             .team_rules()
             .allow_new_entity(
                 &battle.state,
-                &team,
-                EntityAddition::CreatureConversion(&creature),
+                team,
+                EntityAddition::CreatureConversion(creature),
             )
             .map_err(|err| {
                 WeaselError::ConvertedCreatureUnaccepted(
@@ -734,7 +734,7 @@ impl<R: BattleRules + 'static> Event<R> for RemoveCreature<R> {
                 // Check teams' objectives.
                 Battle::check_objectives(
                     &battle.state,
-                    &battle.rules.team_rules(),
+                    battle.rules.team_rules(),
                     &battle.metrics.read_handle(),
                     event_queue,
                     Checkpoint::TurnEnd,

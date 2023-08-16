@@ -146,7 +146,7 @@ impl<R: BattleRules + 'static> Event<R> for InvokePower<R> {
                     battle
                         .state
                         .entities
-                        .actor(&e)
+                        .actor(e)
                         .map(|a| *a.team_id() == self.team_id)
                         .unwrap_or(false)
                 }),

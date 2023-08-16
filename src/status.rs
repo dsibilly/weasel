@@ -229,11 +229,11 @@ pub struct InflictStatus<R: BattleRules> {
 
 impl<R: BattleRules> InflictStatus<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         entity_id: EntityId<R>,
         status_id: StatusId<R>,
-    ) -> InflictStatusTrigger<'a, R, P> {
+    ) -> InflictStatusTrigger<'_, R, P> {
         InflictStatusTrigger {
             processor,
             entity_id,
@@ -451,11 +451,11 @@ pub struct ClearStatus<R: BattleRules> {
 
 impl<R: BattleRules> ClearStatus<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         entity_id: EntityId<R>,
         status_id: StatusId<R>,
-    ) -> ClearStatusTrigger<'a, R, P> {
+    ) -> ClearStatusTrigger<'_, R, P> {
         ClearStatusTrigger {
             processor,
             entity_id,
@@ -645,11 +645,11 @@ pub struct AlterStatuses<R: BattleRules> {
 
 impl<R: BattleRules> AlterStatuses<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         id: EntityId<R>,
         alteration: StatusesAlteration<R>,
-    ) -> AlterStatusesTrigger<'a, R, P> {
+    ) -> AlterStatusesTrigger<'_, R, P> {
         AlterStatusesTrigger {
             processor,
             id,

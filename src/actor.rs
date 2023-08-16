@@ -224,11 +224,11 @@ pub struct AlterAbilities<R: BattleRules> {
 
 impl<R: BattleRules> AlterAbilities<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         id: EntityId<R>,
         alteration: AbilitiesAlteration<R>,
-    ) -> AlterAbilitiesTrigger<'a, R, P> {
+    ) -> AlterAbilitiesTrigger<'_, R, P> {
         AlterAbilitiesTrigger {
             processor,
             id,
@@ -454,7 +454,7 @@ impl<R: BattleRules + 'static> Event<R> for RegenerateAbilities<R> {
         let mut to_remove = Vec::new();
         // Remove all actor's abilities not present in the new set.
         for ability in actor.abilities() {
-            if abilities.iter().find(|e| e.id() == ability.id()).is_none() {
+            if !abilities.iter().any(|e| e.id() == ability.id()) {
                 to_remove.push(ability.id().clone());
             }
         }

@@ -99,7 +99,7 @@ impl<R: BattleRules + 'static> EventReceiver<R> for Client<R> {
         // Verify the event.
         self.battle.verify_wrapper(&event)?;
         // Apply the event on the battle.
-        self.battle.apply(&event.wrapper(), &mut None);
+        self.battle.apply(event.wrapper(), &mut None);
         // Send the event to all client sinks.
         self.client_sinks.send_all(&event);
         Ok(())

@@ -262,11 +262,11 @@ pub struct MoveEntity<R: BattleRules> {
 
 impl<R: BattleRules> MoveEntity<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         id: EntityId<R>,
         position: Position<R>,
-    ) -> MoveEntityTrigger<'a, R, P> {
+    ) -> MoveEntityTrigger<'_, R, P> {
         MoveEntityTrigger {
             processor,
             id,

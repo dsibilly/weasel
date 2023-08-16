@@ -31,7 +31,7 @@ impl<R: BattleRules> Rights<R> {
     /// Add rights for `team` to `player`.
     fn add(&mut self, player: PlayerId, team: &TeamId<R>) {
         if let Some((_, rights)) = self.data.iter_mut().find(|(e, _)| *e == player) {
-            if rights.iter_mut().find(|e| *e == team).is_none() {
+            if !rights.iter_mut().any(|e| e == team) {
                 rights.push(team.clone());
             }
         } else {
@@ -201,22 +201,22 @@ mod tests {
         // Add rights for team 1 to player 2.
         rights.add(PLAYER_2_ID, &TEAM_1_ID);
         assert_eq!(rights.data.len(), 2);
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_1_ID), true);
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_2_ID), true);
-        assert_eq!(rights.check(PLAYER_2_ID, &TEAM_1_ID), true);
-        assert_eq!(rights.check(PLAYER_2_ID, &TEAM_2_ID), false);
+        assert!(rights.check(PLAYER_1_ID, &TEAM_1_ID));
+        assert!(rights.check(PLAYER_1_ID, &TEAM_2_ID));
+        assert!(rights.check(PLAYER_2_ID, &TEAM_1_ID));
+        assert!(!rights.check(PLAYER_2_ID, &TEAM_2_ID));
         // Remove rights for team 2 to player 1.
         rights.remove(PLAYER_1_ID, &TEAM_2_ID);
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_2_ID), false);
+        assert!(!rights.check(PLAYER_1_ID, &TEAM_2_ID));
         // Remove rights for team 1 to player 2.
         rights.remove(PLAYER_2_ID, &TEAM_1_ID);
-        assert_eq!(rights.check(PLAYER_2_ID, &TEAM_1_ID), false);
+        assert!(!rights.check(PLAYER_2_ID, &TEAM_1_ID));
         assert_eq!(rights.data.len(), 1);
         // Clear.
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_1_ID), true);
+        assert!(rights.check(PLAYER_1_ID, &TEAM_1_ID));
         rights.clear();
         assert_eq!(rights.data.len(), 0);
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_1_ID), false);
+        assert!(!rights.check(PLAYER_1_ID, &TEAM_1_ID));
     }
 
     #[test]
@@ -225,16 +225,16 @@ mod tests {
         // Add rights for team 1 to player 1 and player 2.
         rights.add(PLAYER_1_ID, &TEAM_1_ID);
         rights.add(PLAYER_2_ID, &TEAM_1_ID);
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_1_ID), true);
-        assert_eq!(rights.check(PLAYER_2_ID, &TEAM_1_ID), true);
+        assert!(rights.check(PLAYER_1_ID, &TEAM_1_ID));
+        assert!(rights.check(PLAYER_2_ID, &TEAM_1_ID));
         // Add rights for team 2 to player 1.
         rights.add(PLAYER_1_ID, &TEAM_2_ID);
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_2_ID), true);
+        assert!(rights.check(PLAYER_1_ID, &TEAM_2_ID));
         assert_eq!(rights.data.len(), 2);
         // Remove team 1.
         rights.remove_team(&TEAM_1_ID);
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_1_ID), false);
-        assert_eq!(rights.check(PLAYER_2_ID, &TEAM_1_ID), false);
+        assert!(!rights.check(PLAYER_1_ID, &TEAM_1_ID));
+        assert!(!rights.check(PLAYER_2_ID, &TEAM_1_ID));
         assert_eq!(rights.data.len(), 1);
     }
 
@@ -244,12 +244,12 @@ mod tests {
         // Add rights for team 1 to player 1 and player 2.
         rights.add(PLAYER_1_ID, &TEAM_1_ID);
         rights.add(PLAYER_2_ID, &TEAM_1_ID);
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_1_ID), true);
-        assert_eq!(rights.check(PLAYER_2_ID, &TEAM_1_ID), true);
+        assert!(rights.check(PLAYER_1_ID, &TEAM_1_ID));
+        assert!(rights.check(PLAYER_2_ID, &TEAM_1_ID));
         assert_eq!(rights.data.len(), 2);
         // Remove player 1.
         rights.remove_player(PLAYER_1_ID);
-        assert_eq!(rights.check(PLAYER_1_ID, &TEAM_1_ID), false);
+        assert!(!rights.check(PLAYER_1_ID, &TEAM_1_ID));
         assert_eq!(rights.data.len(), 1);
     }
 

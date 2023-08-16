@@ -367,7 +367,7 @@ impl<R: BattleRules + 'static> Event<R> for StartTurn<R> {
                 return Err(WeaselError::NotAnActor(id.clone()));
             }
             // Verify if entity exists.
-            if let Some(actor) = battle.entities().actor(&id) {
+            if let Some(actor) = battle.entities().actor(id) {
                 // Verify if actor is eligible.
                 if !battle.rounds().eligible(actor) {
                     return Err(WeaselError::ActorNotEligible(id.clone()));
@@ -572,7 +572,7 @@ impl<R: BattleRules + 'static> Event<R> for EndTurn<R> {
             // Check teams' objectives.
             Battle::check_objectives(
                 &battle.state,
-                &battle.rules.team_rules(),
+                battle.rules.team_rules(),
                 &battle.metrics.read_handle(),
                 event_queue,
                 Checkpoint::TurnEnd,

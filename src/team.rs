@@ -388,10 +388,10 @@ impl<R: BattleRules> Clone for CreateTeam<R> {
 
 impl<R: BattleRules> CreateTeam<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         id: TeamId<R>,
-    ) -> CreateTeamTrigger<'a, R, P> {
+    ) -> CreateTeamTrigger<'_, R, P> {
         CreateTeamTrigger {
             processor,
             id,
@@ -439,7 +439,7 @@ impl<R: BattleRules + 'static> Event<R> for CreateTeam<R> {
                     return Err(WeaselError::KinshipRelation);
                 }
                 // Teams in the relations list must exist.
-                if battle.entities().team(&team_id).is_none() {
+                if battle.entities().team(team_id).is_none() {
                     return Err(WeaselError::TeamNotFound(team_id.clone()));
                 }
             }
@@ -478,13 +478,11 @@ impl<R: BattleRules + 'static> Event<R> for CreateTeam<R> {
         // Set to `Relation::Enemy` all relations to other teams not explicitly set.
         for team_id in battle.entities().teams().map(|e| e.id()).filter(|e| {
             **e != self.id
-                && self
+                && !self
                     .relations
                     .as_ref()
                     .unwrap_or(&Vec::new())
-                    .iter()
-                    .find(|(id, _)| *id == **e)
-                    .is_none()
+                    .iter().any(|(id, _)| *id == **e)
         }) {
             relations.push((
                 RelationshipPair::new(self.id.clone(), team_id.clone()),
@@ -849,11 +847,11 @@ impl<R: BattleRules> Clone for ConcludeObjectives<R> {
 
 impl<R: BattleRules> ConcludeObjectives<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         id: TeamId<R>,
         conclusion: Conclusion,
-    ) -> ConcludeObjectivesTrigger<'a, R, P> {
+    ) -> ConcludeObjectivesTrigger<'_, R, P> {
         ConcludeObjectivesTrigger {
             processor,
             id,
@@ -1265,11 +1263,11 @@ pub struct AlterPowers<R: BattleRules> {
 
 impl<R: BattleRules> AlterPowers<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         id: TeamId<R>,
         alteration: PowersAlteration<R>,
-    ) -> AlterPowersTrigger<'a, R, P> {
+    ) -> AlterPowersTrigger<'_, R, P> {
         AlterPowersTrigger {
             processor,
             id,
@@ -1500,7 +1498,7 @@ impl<R: BattleRules + 'static> Event<R> for RegeneratePowers<R> {
         let mut to_remove = Vec::new();
         // Remove all team's powers not present in the new set.
         for power in team.powers() {
-            if powers.iter().find(|e| e.id() == power.id()).is_none() {
+            if !powers.iter().any(|e| e.id() == power.id()) {
                 to_remove.push(power.id().clone());
             }
         }

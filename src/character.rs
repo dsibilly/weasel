@@ -254,11 +254,11 @@ pub struct AlterStatistics<R: BattleRules> {
 
 impl<R: BattleRules> AlterStatistics<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         id: EntityId<R>,
         alteration: StatisticsAlteration<R>,
-    ) -> AlterStatisticsTrigger<'a, R, P> {
+    ) -> AlterStatisticsTrigger<'_, R, P> {
         AlterStatisticsTrigger {
             processor,
             id,
@@ -492,10 +492,9 @@ impl<R: BattleRules + 'static> Event<R> for RegenerateStatistics<R> {
         let mut to_remove = Vec::new();
         // Remove all character's statistics not present in the new set.
         for statistic in character.statistics() {
-            if statistics
+            if !statistics
                 .iter()
-                .find(|e| e.id() == statistic.id())
-                .is_none()
+                .any(|e| e.id() == statistic.id())
             {
                 to_remove.push(statistic.id().clone());
             }

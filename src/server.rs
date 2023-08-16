@@ -43,7 +43,7 @@ impl<R: BattleRules + 'static> Server<R> {
     }
 
     /// Returns a mutable handle to manage the players' rights to control one or more teams.
-    pub fn rights_mut<'a>(&'a mut self) -> RightsHandleMut<R, impl Iterator<Item = &'a TeamId<R>>> {
+    pub fn rights_mut(&mut self) -> RightsHandleMut<R, impl Iterator<Item = &'_ TeamId<R>>> {
         self.battle.rights_mut()
     }
 
@@ -177,7 +177,7 @@ impl<R: BattleRules + 'static> EventReceiver<R> for Server<R> {
         // Verify the event.
         self.battle.verify_wrapper(&event)?;
         // Apply the event on the battle.
-        self.battle.apply(&event.wrapper(), &mut None);
+        self.battle.apply(event.wrapper(), &mut None);
         // Send the event to all client sinks.
         self.client_sinks.send_all(&event);
         Ok(())

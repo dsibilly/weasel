@@ -188,11 +188,11 @@ impl<R: BattleRules> Clone for CreateObject<R> {
 
 impl<R: BattleRules> CreateObject<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         id: ObjectId<R>,
         position: Position<R>,
-    ) -> CreateObjectTrigger<'a, R, P> {
+    ) -> CreateObjectTrigger<'_, R, P> {
         CreateObjectTrigger {
             processor,
             id,

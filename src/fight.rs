@@ -143,10 +143,10 @@ pub struct ApplyImpact<R: BattleRules> {
 
 impl<R: BattleRules> ApplyImpact<R> {
     /// Returns a trigger for this event.
-    pub fn trigger<'a, P: EventProcessor<R>>(
-        processor: &'a mut P,
+    pub fn trigger<P: EventProcessor<R>>(
+        processor: &mut P,
         impact: Impact<R>,
-    ) -> ApplyImpactTrigger<'a, R, P> {
+    ) -> ApplyImpactTrigger<'_, R, P> {
         ApplyImpactTrigger { processor, impact }
     }
 

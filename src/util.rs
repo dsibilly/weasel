@@ -54,13 +54,13 @@ pub(crate) mod tests {
     }
 
     /// Creates a team with default arguments.
-    pub(crate) fn team<'a, R: BattleRules + 'static>(server: &'a mut Server<R>, id: TeamId<R>) {
+    pub(crate) fn team<R: BattleRules + 'static>(server: &mut Server<R>, id: TeamId<R>) {
         assert_eq!(CreateTeam::trigger(server, id).fire().err(), None);
     }
 
     /// Creates a creature with default arguments.
-    pub(crate) fn creature<'a, R: BattleRules + 'static>(
-        server: &'a mut Server<R>,
+    pub(crate) fn creature<R: BattleRules + 'static>(
+        server: &mut Server<R>,
         creature_id: CreatureId<R>,
         team_id: TeamId<R>,
         position: Position<R>,
@@ -74,8 +74,8 @@ pub(crate) mod tests {
     }
 
     /// Creates an object with default arguments.
-    pub(crate) fn object<'a, R: BattleRules + 'static>(
-        server: &'a mut Server<R>,
+    pub(crate) fn object<R: BattleRules + 'static>(
+        server: &mut Server<R>,
         object_id: ObjectId<R>,
         position: Position<R>,
     ) {

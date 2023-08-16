@@ -184,7 +184,7 @@ fn undo(
             // There will always be a StartTurn before an ActivateAbility.
             for event in event_buffer
                 .iter()
-                .take(previous_start_turn_index.unwrap() as usize)
+                .take(previous_start_turn_index.unwrap())
             {
                 server.receive(event.clone()).unwrap();
             }
