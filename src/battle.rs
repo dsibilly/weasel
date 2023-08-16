@@ -213,9 +213,7 @@ impl<R: BattleRules + 'static> Battle<R> {
     }
 
     /// Returns a mutable handle to manage the players' rights to control one or more teams.
-    pub(crate) fn rights_mut(
-        &mut self,
-    ) -> RightsHandleMut<R, impl Iterator<Item = &'_ TeamId<R>>> {
+    pub(crate) fn rights_mut(&mut self) -> RightsHandleMut<R, impl Iterator<Item = &'_ TeamId<R>>> {
         RightsHandleMut::new(
             &mut self.rights,
             self.state.entities().teams().map(|team| team.id()),

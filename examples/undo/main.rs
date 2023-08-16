@@ -182,10 +182,7 @@ fn undo(
                 .rposition(|e| e.kind() == EventKind::StartTurn);
             // We replay all events in the buffer up to the start turn (excluded).
             // There will always be a StartTurn before an ActivateAbility.
-            for event in event_buffer
-                .iter()
-                .take(previous_start_turn_index.unwrap())
-            {
+            for event in event_buffer.iter().take(previous_start_turn_index.unwrap()) {
                 server.receive(event.clone()).unwrap();
             }
             server

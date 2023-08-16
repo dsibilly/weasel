@@ -362,7 +362,7 @@ macro_rules! events_vec {
         // Collect all events into a vector.
         let events: Vec<Box<dyn Event<CustomRules> + Send>> = vec![
             DummyEvent::trigger(&mut ()).event(),
-            CreateTeam::trigger(&mut(), TEAM_1_ID).event(),
+            CreateTeam::trigger(&mut (), TEAM_1_ID).event(),
             CreateCreature::trigger(&mut (), TEAM_1_ID, CREATURE_1_ID, ()).event(),
             CreateObject::trigger(&mut (), OBJECT_1_ID, ()).event(),
             MoveEntity::trigger(&mut (), ENTITY_1_ID, ()).event(),
@@ -393,7 +393,7 @@ macro_rules! events_vec {
             ResetObjectives::trigger(&mut (), TEAM_1_ID).event(),
             ResetRounds::trigger(&mut ()).event(),
             ResetSpace::trigger(&mut ()).event(),
-            EndBattle::trigger(&mut ()).event()
+            EndBattle::trigger(&mut ()).event(),
         ];
 
         events

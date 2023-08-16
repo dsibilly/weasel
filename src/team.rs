@@ -482,7 +482,8 @@ impl<R: BattleRules + 'static> Event<R> for CreateTeam<R> {
                     .relations
                     .as_ref()
                     .unwrap_or(&Vec::new())
-                    .iter().any(|(id, _)| *id == **e)
+                    .iter()
+                    .any(|(id, _)| *id == **e)
         }) {
             relations.push((
                 RelationshipPair::new(self.id.clone(), team_id.clone()),

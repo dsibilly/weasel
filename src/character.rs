@@ -492,10 +492,7 @@ impl<R: BattleRules + 'static> Event<R> for RegenerateStatistics<R> {
         let mut to_remove = Vec::new();
         // Remove all character's statistics not present in the new set.
         for statistic in character.statistics() {
-            if !statistics
-                .iter()
-                .any(|e| e.id() == statistic.id())
-            {
+            if !statistics.iter().any(|e| e.id() == statistic.id()) {
                 to_remove.push(statistic.id().clone());
             }
         }
